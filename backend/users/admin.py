@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.contrib import admin
 
-from .models import User
+from .models import User, Follow
 
 
 class SiteAdmin(admin.ModelAdmin):
@@ -40,3 +40,9 @@ class UserAdmin(SiteAdmin):
                 form.base_fields[f].disabled = True
 
         return form
+
+
+@admin.register(Follow)
+class FollowAdmin(admin.ModelAdmin):
+    list_display = ('pk', 'user', 'author')
+    list_filter = ('user', 'author')

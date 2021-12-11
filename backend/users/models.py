@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.db.models import Q, F
 from django.utils.translation import gettext_lazy as _
-
 
 CHOICES = {
     'user': 'user',
@@ -28,6 +28,9 @@ class User(AbstractUser):
         verbose_name=_('Дата регистрации'),
         auto_now_add=True,
     )
+    REQUIRED_FIELDS = ('email',
+                       'first_name',
+                       'last_name',)
 
     class Meta:
         swappable = 'AUTH_USER_MODEL'
@@ -42,3 +45,24 @@ class User(AbstractUser):
     @property
     def is_admin(self):
         return self.is_superuser or self.role == CHOICES['admin']
+
+
+class Follow(models.Model):
+    user = models.ForeignKey(User,
+                             on_delete=models.CASCADE,
+                             related_name='follower',
+                             verbose_name='Пользователь')
+    author = models.ForeignKey(User,
+                               on_delete=models.CASCADE,
+                               related_name='following',
+                               verbose_name='Автор рецепта')
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['user', 'author'],
+                                    name='uniq_follow'),
+            models.CheckConstraint(check=~Q(user=F('author')),
+                                   name='self_following'),
+        ]
+        verbose_name = 'Подписка'
+        verbose_name_plural = 'Подписки'

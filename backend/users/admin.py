@@ -46,3 +46,5 @@ class UserAdmin(SiteAdmin):
 class FollowAdmin(admin.ModelAdmin):
     list_display = ('pk', 'user', 'author')
     list_filter = ('user', 'author')
+    search_fields = ('author',)
+    empty_value_display = settings.EMPTY_VALUE

@@ -19,6 +19,7 @@ from django.urls import path, include
 
 api_patterns = [
     path('', include('users.urls', namespace='api_users')),
+    path('', include('recipes.urls', namespace='api_recipes')),
 ]
 
 urlpatterns = [

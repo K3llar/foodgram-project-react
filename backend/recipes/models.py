@@ -22,3 +22,21 @@ class Tag(models.Model):
     class Meta:
         ordering = ('-id',)
         verbose_name_plural = 'Идентификаторы'
+
+
+class Ingredient(models.Model):
+    name = models.CharField(verbose_name=_('Название'),
+                            max_length=200)
+    measurement_unit = models.CharField(
+        verbose_name=_('Единица измерения'),
+        max_length=50,
+    )
+    REQUIRED_FIELDS = ('name',
+                       'measurement_unit',)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ('id',)
+        verbose_name_plural = 'Ингредиенты'

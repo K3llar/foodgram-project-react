@@ -30,22 +30,6 @@ class IngredientAdmin(SiteAdmin):
     search_fields = ('name',)
 
 
-@admin.register(Recipe)
-class RecipeAdmin(SiteAdmin):
-    list_display = ('id',
-                    'name',
-                    'author',
-                    'in_favorite',)
-    list_filter = ('name', 'author', 'in_favorite')
-
-    # def in_favorite(self, obj):
-    #     return obj.in_favorite.all().count()
-
-    @staticmethod
-    def in_favorite(obj):
-        return obj.in_favorite.all().count()
-
-
 class RecipeIngredientsInline(admin.TabularInline):
     model = RecipeIngredients
     min_num = 1
@@ -56,6 +40,20 @@ class RecipeTagsInline(admin.TabularInline):
     model = RecipeTags
     min_num = 1
     extra = 0
+
+
+@admin.register(Recipe)
+class RecipeAdmin(SiteAdmin):
+    list_display = ('id',
+                    'name',
+                    'author',
+                    'in_favorite',)
+    list_filter = ('name', 'author', 'tags', 'in_favorite')
+    inlines = (RecipeTagsInline, RecipeIngredientsInline)
+
+    @staticmethod
+    def in_favorite(obj):
+        return obj.in_favorite.all().count()
 
 
 @admin.register(FavoriteRecipe)

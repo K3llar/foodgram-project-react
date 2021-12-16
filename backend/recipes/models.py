@@ -62,12 +62,14 @@ class Recipe(models.Model):
     tags = models.ManyToManyField(
         Tag,
         through='RecipeTags',
-        verbose_name=_('Идентификаторы рецепта')
+        verbose_name=_('Идентификаторы рецепта'),
+        related_name='recipes',
     )
     ingredients = models.ManyToManyField(
         Ingredient,
         through='RecipeIngredients',
-        verbose_name='Ингредиенты рецепта'
+        verbose_name=_('Ингредиенты рецепта'),
+        related_name='recipes',
     )
     image = models.ImageField(upload_to='recipes/')
     cooking_time = models.PositiveSmallIntegerField(
@@ -97,11 +99,11 @@ class RecipeTags(models.Model):
         verbose_name = 'Tags'
         verbose_name_plural = 'Идентификаторы'
 
-    def __str__(self):
-        return (self.tag_id.name[:15] + '-->' + self.recipe_id.name[:15])
+    # def __str__(self):
+    #     return (self.tag.name[:15] + '-->' + self.recipe.name[:15])
 
-    def __repr__(self):
-        return (self.tag_id.name[:15] + '-->' + self.recipe_id.name[:15])
+    # def __repr__(self):
+    #     return (self.tag_id.name[:15] + '-->' + self.recipe_id.name[:15])
 
 
 class RecipeIngredients(models.Model):
@@ -110,18 +112,18 @@ class RecipeIngredients(models.Model):
                                verbose_name=_('Ингредиент рецептов'))
     ingredient = models.ForeignKey(Ingredient,
                                    on_delete=models.PROTECT,
-                                   verbose_name=_('Ингредиент'))
+                                   verbose_name=_('Ингредиент'),)
     amount = models.PositiveSmallIntegerField(
         validators=(MinValueValidator(1),),
-        verbose_name=_('Время приготовления'),
+        verbose_name=_('Количество'),
     )
 
     class Meta:
         verbose_name = 'Ingredients'
         verbose_name_plural = 'Ингредиенты'
 
-    def __str__(self):
-        return (self.ingredient_id.name[:15] + 'в' + self.recipe_id.name[:15])
+    # def __str__(self):
+    #     return (self.ingredient.name[:15] + 'в' + self.recipe.name[:15])
 
 
 class FavoriteRecipe(models.Model):

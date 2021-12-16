@@ -1,8 +1,8 @@
 from django.contrib.auth import get_user_model
-from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 from djoser.serializers import UserCreateSerializer, UserSerializer
-from rest_framework.fields import CurrentUserDefault
+
+from recipes.models import Recipe
 
 from .models import Follow
 
@@ -53,6 +53,13 @@ class CustomUserSerializer(UserSerializer):
                                      author=obj).exists()
 
 
+class FollowRecipeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Recipe
+        fields = ('id', 'name', 'image',
+                  'cooking_time')
+
+
 class FollowSerializer(serializers.ModelSerializer):
     is_subscribed = serializers.SerializerMethodField(read_only=True)
     recipes = serializers.SerializerMethodField(read_only=True)
@@ -78,26 +85,16 @@ class FollowSerializer(serializers.ModelSerializer):
         return Follow.objects.filter(user=user, author=obj).exists()
 
     def get_recipes(self, obj):
-        pass
+        request = self.context.get('request')
+        recipes_limit = request.query_params.get('recipes_limit')
+        if recipes_limit is not None:
+            recipes = obj.recipes.all()[:(int(recipes_limit))]
+        else:
+            recipes = obj.recipes.all()
+        context = {'request': request}
+        return FollowRecipeSerializer(recipes, many=True,
+                                      context=context).data
 
-    def get_recipes_count(self, obj):
-        pass
-
-# class FollowSerializer(serializers.ModelSerializer):
-#     user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
-#     author = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
-#
-#     class Meta:
-#         model = Follow
-#         fields = ('user', 'author')
-#
-#     def validate(self, data):
-#         user = self.context.get('request').user
-#         author_id = data['author'].id
-#         if Follow.objects.filter(user=user,
-#                                  author__id=author_id).exists():
-#             raise serializers.ValidationError(
-#                     'Вы уже подписаны на этого пользователя')
-#         if user.id == author_id:
-#             raise serializers.ValidationError('Нельзя подписаться на себя')
-#         return data
+    @staticmethod
+    def get_recipes_count(obj):
+        return obj.recipes.count()

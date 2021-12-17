@@ -3,7 +3,6 @@ from django.core import validators
 
 
 class HexColorField(models.CharField):
-    """Поле для хранения HTML-кода цвета"""
 
     def __init__(self, *args, **kwargs):
         kwargs.setdefault('max_length', 7)
@@ -11,5 +10,3 @@ class HexColorField(models.CharField):
         self.validators.append(
             validators.RegexValidator(r'#([a-fA-F0-9]{6})')
         )
-
-

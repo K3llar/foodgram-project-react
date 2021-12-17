@@ -79,8 +79,8 @@ class Recipe(models.Model):
     REQUIRED_FIELDS = '__all__'
 
     class Meta:
-        ordering = ('name',)
-        verbose_name = 'recipes'
+        ordering = ('-id',)
+        verbose_name = 'Рецепт'
         verbose_name_plural = 'Рецепты'
 
     def __str__(self):
@@ -90,20 +90,17 @@ class Recipe(models.Model):
 class RecipeTags(models.Model):
     recipe = models.ForeignKey(Recipe,
                                on_delete=models.CASCADE,
-                               verbose_name=_('Идентификатор рецептов'),)
+                               verbose_name=_('Идентификатор рецептов'), )
     tag = models.ForeignKey(Tag,
                             on_delete=models.CASCADE,
                             verbose_name=_('Идентификатор'))
 
     class Meta:
-        verbose_name = 'Tags'
+        verbose_name = 'Идентификатор'
         verbose_name_plural = 'Идентификаторы'
 
     # def __str__(self):
     #     return (self.tag.name[:15] + '-->' + self.recipe.name[:15])
-
-    # def __repr__(self):
-    #     return (self.tag_id.name[:15] + '-->' + self.recipe_id.name[:15])
 
 
 class RecipeIngredients(models.Model):
@@ -112,14 +109,14 @@ class RecipeIngredients(models.Model):
                                verbose_name=_('Ингредиент рецептов'))
     ingredient = models.ForeignKey(Ingredient,
                                    on_delete=models.PROTECT,
-                                   verbose_name=_('Ингредиент'),)
+                                   verbose_name=_('Ингредиент'), )
     amount = models.PositiveSmallIntegerField(
         validators=(MinValueValidator(1),),
         verbose_name=_('Количество'),
     )
 
     class Meta:
-        verbose_name = 'Ingredients'
+        verbose_name = 'Ингредиент'
         verbose_name_plural = 'Ингредиенты'
 
     # def __str__(self):
@@ -143,5 +140,27 @@ class FavoriteRecipe(models.Model):
                                     name='pair_unique'),
         )
         ordering = ('-id',)
-        verbose_name = 'Favorite'
+        verbose_name = 'Избранное'
         verbose_name_plural = 'Избранные рецепты'
+
+
+class ShoppingList(models.Model):
+    recipe = models.ForeignKey(Recipe,
+                               on_delete=models.CASCADE,
+                               verbose_name=_('Рецепт'),
+                               related_name='recipe_in_cart')
+    user = models.ForeignKey(User,
+                             on_delete=models.CASCADE,
+                             verbose_name=_('Пользователь'),
+                             related_name='shopping_list')
+
+    class Meta:
+        constraints = (
+            models.UniqueConstraint(fields=('recipe',
+                                            'user'),
+                                    name='pair_unique'),
+        )
+    ordering = ('-id',)
+    verbose_name = 'Список покупок'
+    verbose_name_plural = 'Списки покупок'
+

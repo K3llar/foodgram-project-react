@@ -55,7 +55,21 @@ def follow_author(request, pk):
         return HttpResponse(status=status.HTTP_204_NO_CONTENT)
 
 
-class FollowListViewSet(generics.ListAPIView):
+# class FollowListViewSet(generics.ListAPIView):
+#     queryset = User.objects.all()
+#     serializer_class = FollowSerializer
+#     pagination_class = CustomPageNumberPaginator
+#     filter_backends = (filters.SearchFilter,)
+#     permission_classes = (permissions.IsAuthenticated,)
+#     search_fields = ('^following__user',)
+#
+#     def get_queryset(self):
+#         user = self.request.user
+#         new_queryset = User.objects.filter(following__user=user)
+#         return new_queryset
+
+
+class FollowListViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = User.objects.all()
     serializer_class = FollowSerializer
     pagination_class = CustomPageNumberPaginator

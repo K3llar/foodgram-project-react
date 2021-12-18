@@ -184,7 +184,7 @@ class AddRecipeSerializer(serializers.ModelSerializer):
         return data
 
 
-class ShowFavoriteRecipeSerializer(serializers.ModelSerializer):
+class ShowFavoriteRecipeShopListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Recipe
         fields = ('id', 'name',
@@ -212,4 +212,33 @@ class FavoriteRecipeSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         request = self.context.get('request')
         context = {'request': request}
-        return ShowFavoriteRecipeSerializer(instance.recipe, context=context).data
+        return ShowFavoriteRecipeShopListSerializer(
+            instance.recipe,
+            context=context).data
+
+
+class ShoppingListSerializer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+    recipe = serializers.PrimaryKeyRelatedField(queryset=Recipe.objects.all())
+
+    class Meta:
+        model = ShoppingList
+        fields = ('user', 'recipe')
+
+    def validate(self, data):
+        user = data['user']
+        recipe_id = data['recipe'].id
+        if ShoppingList.objects.filter(user=user,
+                                       recipe__id=recipe_id).exists():
+            raise ValidationError(
+                'Рецепт уже добавлен в корзину'
+            )
+        return data
+
+    def to_representation(self, instance):
+        request = self.context.get('request')
+        context = {'request': request}
+        return ShowFavoriteRecipeShopListSerializer(
+            instance.recipe,
+            context=context
+        ).data

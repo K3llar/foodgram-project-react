@@ -9,6 +9,7 @@ from .models import (Tag,
                      Ingredient,
                      Recipe,
                      FavoriteRecipe,
+                     ShoppingList,
                      RecipeTags,
                      RecipeIngredients)
 from .serializers import (TagSerializer,
@@ -16,7 +17,7 @@ from .serializers import (TagSerializer,
                           ShowRecipeSerializer,
                           AddRecipeSerializer,
                           FavoriteRecipeSerializer,
-                          ShowFavoriteRecipeSerializer)
+                          ShoppingListSerializer)
 from .permissions import AdminOrReadOnly, AuthorOrAdmin
 from .filters import IngredientFilter
 
@@ -71,4 +72,24 @@ class RecipeViewSet(viewsets.ModelViewSet):
                                      user=user,
                                      recipe=recipe)
         favorite.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    @action(detail=True)
+    def shopping_cart(self, request, pk):
+        data = {'user': request.user.id,
+                'recipe': pk}
+        serializer = ShoppingListSerializer(data=data,
+                                            context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    @shopping_cart.mapping.delete
+    def delete_shopping_cart(self, request, pk):
+        user = request.user
+        recipe = get_object_or_404(Recipe, id=pk)
+        shopping_list = get_object_or_404(ShoppingList,
+                                          user=user,
+                                          recipe=recipe)
+        shopping_list.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)

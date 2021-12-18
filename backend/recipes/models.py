@@ -137,7 +137,7 @@ class FavoriteRecipe(models.Model):
         constraints = (
             models.UniqueConstraint(fields=('recipe',
                                             'user'),
-                                    name='pair_unique'),
+                                    name='pair_unique_favorite'),
         )
         ordering = ('-id',)
         verbose_name = 'Избранное'
@@ -158,7 +158,7 @@ class ShoppingList(models.Model):
         constraints = (
             models.UniqueConstraint(fields=('recipe',
                                             'user'),
-                                    name='pair_unique'),
+                                    name='pair_unique_shopping'),
         )
     ordering = ('-id',)
     verbose_name = 'Список покупок'

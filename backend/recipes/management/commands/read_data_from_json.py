@@ -34,7 +34,8 @@ class Command(BaseCommand):
         По умолчанию: ~/static/data"""
         if path is None:
             os.chdir(settings.BASE_DIR)
-            os.chdir("../../../../../../Dev/foodgram-project-react/data")
+            # os.chdir("../../../../../../Dev/foodgram-project-react/data")
+            os.chdir("/fixtures")
             os.chdir(pathlib.Path.cwd() / 'ingredients.json')
         elif os.path.exists(path):
             os.chdir(path)

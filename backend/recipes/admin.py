@@ -6,7 +6,8 @@ from .models import (Tag,
                      Recipe,
                      RecipeTags,
                      RecipeIngredients,
-                     FavoriteRecipe)
+                     FavoriteRecipe,
+                     ShoppingList)
 
 
 class SiteAdmin(admin.ModelAdmin):
@@ -61,3 +62,10 @@ class FavoriteRecipeAdmin(SiteAdmin):
     list_display = ('id',
                     'user',
                     'recipe',)
+
+
+@admin.register(ShoppingList)
+class ShoppingListAdmin(SiteAdmin):
+    list_display = ('id',
+                    'user',
+                    'recipe')

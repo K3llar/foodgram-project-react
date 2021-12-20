@@ -160,7 +160,7 @@ class ShoppingList(models.Model):
                                             'user'),
                                     name='pair_unique_shopping'),
         )
-    ordering = ('-id',)
-    verbose_name = 'Список покупок'
-    verbose_name_plural = 'Списки покупок'
+        ordering = ('-id',)
+        verbose_name = 'Список покупок'
+        verbose_name_plural = 'Списки покупок'
 

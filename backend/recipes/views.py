@@ -19,7 +19,7 @@ from .serializers import (TagSerializer,
                           FavoriteRecipeSerializer,
                           ShoppingListSerializer)
 from .permissions import AdminOrReadOnly, AuthorOrAdmin
-from .filters import IngredientFilter
+from .filters import IngredientFilter, RecipeFilter
 
 from backend.pagination import CustomPageNumberPaginator
 
@@ -35,8 +35,10 @@ class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
     pagination_class = CustomPageNumberPaginator
-    filter_backends = [DjangoFilterBackend]
+    filter_backends = (DjangoFilterBackend, )
     filterset_class = IngredientFilter
+    # filter_backends = (filters.SearchFilter, )
+    # search_fields = ('^name',)
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
@@ -47,8 +49,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
     }
     default_serializer_class = AddRecipeSerializer
     permission_classes = (AuthorOrAdmin,)
-    # filter_backends = [DjangoFilterBackend]
-    # filterset_class = RecipeFilter
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = RecipeFilter
     pagination_class = CustomPageNumberPaginator
 
     def get_serializer_class(self):

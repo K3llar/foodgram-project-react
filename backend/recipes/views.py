@@ -1,17 +1,14 @@
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import viewsets, status, filters
+from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.generics import get_object_or_404
-from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 
 from .models import (Tag,
                      Ingredient,
                      Recipe,
                      FavoriteRecipe,
-                     ShoppingList,
-                     RecipeTags,
-                     RecipeIngredients)
+                     ShoppingList,)
 from .serializers import (TagSerializer,
                           IngredientSerializer,
                           ShowRecipeSerializer,
@@ -27,18 +24,16 @@ from backend.pagination import CustomPageNumberPaginator
 class TagViewSet(viewsets.ModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
-    pagination_class = CustomPageNumberPaginator
+    pagination_class = None
     permission_classes = (AdminOrReadOnly,)
 
 
 class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
-    pagination_class = CustomPageNumberPaginator
+    pagination_class = None
     filter_backends = (DjangoFilterBackend, )
     filterset_class = IngredientFilter
-    # filter_backends = (filters.SearchFilter, )
-    # search_fields = ('^name',)
 
 
 class RecipeViewSet(viewsets.ModelViewSet):

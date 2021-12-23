@@ -1,8 +1,0 @@
-chardet==4.0.0
-Django==2.2.6
-django-filter==21.1
-djangorestframework==3.12.4
-djoser==2.1.0
-
-recipes~=0.1
-environ~=1.0

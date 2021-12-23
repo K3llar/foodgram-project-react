@@ -3,13 +3,12 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.db import IntegrityError
 
-from rest_framework import status, viewsets, permissions, filters, generics
+from rest_framework import status, viewsets, permissions, filters
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 
 from djoser import utils
 from djoser.views import TokenDestroyView
-from rest_framework.views import APIView
 
 from backend.pagination import CustomPageNumberPaginator
 
@@ -53,20 +52,6 @@ def follow_author(request, pk):
             return Response(content, status=status.HTTP_400_BAD_REQUEST)
         obj.delete()
         return HttpResponse(status=status.HTTP_204_NO_CONTENT)
-
-
-# class FollowListViewSet(generics.ListAPIView):
-#     queryset = User.objects.all()
-#     serializer_class = FollowSerializer
-#     pagination_class = CustomPageNumberPaginator
-#     filter_backends = (filters.SearchFilter,)
-#     permission_classes = (permissions.IsAuthenticated,)
-#     search_fields = ('^following__user',)
-#
-#     def get_queryset(self):
-#         user = self.request.user
-#         new_queryset = User.objects.filter(following__user=user)
-#         return new_queryset
 
 
 class FollowListViewSet(viewsets.ReadOnlyModelViewSet):

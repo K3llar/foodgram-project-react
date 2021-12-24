@@ -8,7 +8,8 @@ __pycache__/
 
 # Distribution / packaging
 .Python
-build/
+frontend/build/
+frontend/node_modules/
 develop-eggs/
 dist/
 downloads/
@@ -130,3 +131,5 @@ dmypy.json
 
 # .idea
 .idea
+/frontend/node_modules/
+/backend/media/

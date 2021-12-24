@@ -1,26 +1,19 @@
 from django.http import HttpResponse
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import viewsets, status
+from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 
-from .models import (Tag,
-                     Ingredient,
-                     Recipe,
-                     FavoriteRecipe,
-                     ShoppingList,
-                     RecipeIngredients, )
-from .serializers import (TagSerializer,
-                          IngredientSerializer,
-                          ShowRecipeSerializer,
-                          AddRecipeSerializer,
-                          FavoriteRecipeSerializer,
-                          ShoppingListSerializer)
-from .permissions import AdminOrReadOnly, AuthorOrAdmin
-from .filters import IngredientFilter, RecipeFilter
-
 from backend.pagination import CustomPageNumberPaginator
+
+from .filters import IngredientFilter, RecipeFilter
+from .models import (FavoriteRecipe, Ingredient, Recipe, RecipeIngredients,
+                     ShoppingList, Tag)
+from .permissions import AdminOrReadOnly, AuthorOrAdmin
+from .serializers import (AddRecipeSerializer, FavoriteRecipeSerializer,
+                          IngredientSerializer, ShoppingListSerializer,
+                          ShowRecipeSerializer, TagSerializer)
 
 
 class TagViewSet(viewsets.ModelViewSet):
@@ -51,7 +44,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
     pagination_class = CustomPageNumberPaginator
 
     def get_serializer_class(self):
-        return self.serializer_classes.get(self.action, self.default_serializer_class)
+        return self.serializer_classes.get(self.action,
+                                           self.default_serializer_class)
 
     @action(detail=True)
     def favorite(self, request, pk):
@@ -126,4 +120,3 @@ def download_list(list_to_download, filename):
     response = HttpResponse(list_to_download, content_type='text/plain')
     response['Content-Disposition'] = f'attachment; filename="{filename}"'
     return response
-

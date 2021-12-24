@@ -157,4 +157,3 @@ class ShoppingList(models.Model):
         ordering = ('-id',)
         verbose_name = 'Список покупок'
         verbose_name_plural = 'Списки покупок'
-

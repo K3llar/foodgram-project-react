@@ -1,19 +1,17 @@
 from django.core.exceptions import ObjectDoesNotExist
+from django.db import IntegrityError
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
-from django.db import IntegrityError
-
-from rest_framework import status, viewsets, permissions, filters
+from djoser import utils
+from djoser.views import TokenDestroyView
+from rest_framework import filters, permissions, status, viewsets
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 
-from djoser import utils
-from djoser.views import TokenDestroyView
-
 from backend.pagination import CustomPageNumberPaginator
 
-from .serializers import FollowSerializer
 from .models import Follow, User
+from .serializers import FollowSerializer
 
 
 class CustomTokenDestroyView(TokenDestroyView):

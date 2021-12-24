@@ -96,11 +96,8 @@ class RecipeTags(models.Model):
                             verbose_name=_('Идентификатор'))
 
     class Meta:
-        verbose_name = 'Идентификатор'
-        verbose_name_plural = 'Идентификаторы'
-
-    # def __str__(self):
-    #     return (self.tag.name[:15] + '-->' + self.recipe.name[:15])
+        verbose_name = 'Идентификатор рецепта'
+        verbose_name_plural = 'Идентификаторы рецептов'
 
 
 class RecipeIngredients(models.Model):
@@ -116,11 +113,8 @@ class RecipeIngredients(models.Model):
     )
 
     class Meta:
-        verbose_name = 'Ингредиент'
-        verbose_name_plural = 'Ингредиенты'
-
-    # def __str__(self):
-    #     return (self.ingredient.name[:15] + 'в' + self.recipe.name[:15])
+        verbose_name = 'Ингредиент в рецепте'
+        verbose_name_plural = 'Ингредиенты в рецептах'
 
 
 class FavoriteRecipe(models.Model):

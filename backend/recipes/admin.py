@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.contrib import admin
 
 from .models import (Tag,
@@ -41,6 +40,23 @@ class RecipeTagsInline(admin.TabularInline):
     model = RecipeTags
     min_num = 1
     extra = 0
+
+
+@admin.register(RecipeTags)
+class RecipeTagsAdmin(SiteAdmin):
+    list_display = ('id',
+                    'recipe',
+                    'tag')
+    list_filter = ('id', 'recipe', 'tag')
+
+
+@admin.register(RecipeIngredients)
+class RecipeIngredientsAdmin(SiteAdmin):
+    list_display = ('id',
+                    'recipe',
+                    'ingredient',
+                    'amount')
+    list_filter = ('id', 'recipe', 'ingredient')
 
 
 @admin.register(Recipe)

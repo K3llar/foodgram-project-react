@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
@@ -8,7 +9,8 @@ from .models import (Tag,
                      Ingredient,
                      Recipe,
                      FavoriteRecipe,
-                     ShoppingList,)
+                     ShoppingList,
+                     RecipeIngredients, )
 from .serializers import (TagSerializer,
                           IngredientSerializer,
                           ShowRecipeSerializer,
@@ -90,3 +92,38 @@ class RecipeViewSet(viewsets.ModelViewSet):
                                           recipe=recipe)
         shopping_list.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+    @action(detail=False)
+    def download_shopping_cart(self, request):
+        shopping_list = request.user.shopping_list.all()
+        to_buy = get_list_of_ingredients(shopping_list)
+        return download_list(to_buy, 'to_buy.txt')
+
+
+def get_list_of_ingredients(recipe_list):
+    ingredients_dict = {}
+    for recipe in recipe_list:
+        ingredients = RecipeIngredients.objects.filter(recipe=recipe.recipe)
+        for ingredient in ingredients:
+            amount = ingredient.amount
+            name = ingredient.ingredient.name
+            measurement_unit = ingredient.ingredient.measurement_unit
+            if name not in ingredients_dict:
+                ingredients_dict[name] = {
+                    'measurement_unit': measurement_unit,
+                    'amount': amount,
+                }
+            else:
+                ingredients_dict[name]['amount'] += amount
+    to_buy = []
+    for item in ingredients_dict:
+        to_buy.append(f'{item} - {ingredients_dict[item]["amount"]} '
+                      f'{ingredients_dict[item]["measurement_unit"]} \n')
+    return to_buy
+
+
+def download_list(list_to_download, filename):
+    response = HttpResponse(list_to_download, content_type='text/plain')
+    response['Content-Disposition'] = f'attachment; filename="{filename}"'
+    return response
+

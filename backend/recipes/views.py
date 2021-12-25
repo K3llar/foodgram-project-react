@@ -1,9 +1,13 @@
 from django.http import HttpResponse
+from django.template.loader import render_to_string
 from django_filters.rest_framework import DjangoFilterBackend
+
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
+
+from weasyprint import HTML
 
 from backend.pagination import CustomPageNumberPaginator
 
@@ -27,7 +31,7 @@ class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
     pagination_class = None
-    filter_backends = (DjangoFilterBackend, )
+    filter_backends = (DjangoFilterBackend,)
     filterset_class = IngredientFilter
 
 
@@ -90,8 +94,15 @@ class RecipeViewSet(viewsets.ModelViewSet):
     @action(detail=False)
     def download_shopping_cart(self, request):
         shopping_list = request.user.shopping_list.all()
-        to_buy = get_list_of_ingredients(shopping_list)
-        return download_list(to_buy, 'to_buy.txt')
+        ingredients = get_list_of_ingredients(shopping_list)
+        html_template = render_to_string('recipes/pdf_template.html',
+                                         {'ingredients': ingredients})
+        html = HTML(string=html_template)
+        result = html.write_pdf()
+        response = HttpResponse(result, content_type='application/pdf;')
+        response['Content-Disposition'] = 'inline; filename=shopping_list.pdf'
+        response['Content-Transfer-Encoding'] = 'binary'
+        return response
 
 
 def get_list_of_ingredients(recipe_list):
@@ -109,18 +120,4 @@ def get_list_of_ingredients(recipe_list):
                 }
             else:
                 ingredients_dict[name]['amount'] += amount
-    to_buy = []
-    for item in ingredients_dict:
-        to_buy.append(f'{item} - {ingredients_dict[item]["amount"]} '
-                      f'{ingredients_dict[item]["measurement_unit"]} \n')
-    return to_buy
-
-
-def download_list(list_to_download, filename):
-    response = HttpResponse(list_to_download, content_type='text/plain')
-    response['Content-Disposition'] = f'attachment; filename="{filename}"'
-    return response
-
-# Подскажи как лучше сделать файл в pdf?
-# пробовал через weasyprint и создание html шаблона, но с библиотекой проблемно
-# работать, не хочет нормально устанавливаться
+    return ingredients_dict

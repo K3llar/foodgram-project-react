@@ -7,7 +7,7 @@
 <body>
     <h2>Список покупок</h2>
     {% for key, value in ingredients.items %}
-        <p>{{ key }} {{ value.amount }} {{ value.measurement_unit }}</p>
+        <li>{{ key }} {{ value.amount }} {{ value.measurement_unit }}</li>
     {% endfor %}
     <h4>Дата создания {% now 'd.m.Y G:i'%}</h4>
 </body>

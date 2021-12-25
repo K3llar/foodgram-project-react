@@ -120,3 +120,7 @@ def download_list(list_to_download, filename):
     response = HttpResponse(list_to_download, content_type='text/plain')
     response['Content-Disposition'] = f'attachment; filename="{filename}"'
     return response
+
+# Подскажи как лучше сделать файл в pdf?
+# пробовал через weasyprint и создание html шаблона, но с библиотекой проблемно
+# работать, не хочет нормально устанавливаться

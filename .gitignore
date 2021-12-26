@@ -8,7 +8,7 @@ __pycache__/
 
 # Distribution / packaging
 .Python
-data
+data/
 frontend
 frontend/build/
 frontend/node_modules/
@@ -137,3 +137,4 @@ dmypy.json
 /backend/media/
 /frontend/
 /data/
+/backend/static/

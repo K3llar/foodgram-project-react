@@ -2,6 +2,7 @@ from django.contrib import admin
 
 from .models import (FavoriteRecipe, Ingredient, Recipe, RecipeIngredients,
                      RecipeTags, ShoppingList, Tag)
+from .forms import TagForm
 
 
 class SiteAdmin(admin.ModelAdmin):
@@ -14,6 +15,7 @@ class TagsAdmin(SiteAdmin):
                     'name',
                     'color',
                     'slug',)
+    form = TagForm
     search_fields = ('name',)
 
 

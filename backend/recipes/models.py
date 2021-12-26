@@ -22,6 +22,7 @@ class Tag(models.Model):
 
     class Meta:
         ordering = ('-id',)
+        verbose_name = 'Идентификатор'
         verbose_name_plural = 'Идентификаторы'
 
     def __str__(self):
@@ -40,6 +41,7 @@ class Ingredient(models.Model):
 
     class Meta:
         ordering = ('name',)
+        verbose_name = 'Ингредиент'
         verbose_name_plural = 'Ингредиенты'
         constraints = (
             models.UniqueConstraint(fields=('name',

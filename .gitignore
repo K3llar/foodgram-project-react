@@ -8,6 +8,7 @@ __pycache__/
 
 # Distribution / packaging
 .Python
+data
 frontend
 frontend/build/
 frontend/node_modules/

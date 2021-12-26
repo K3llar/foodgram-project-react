@@ -20,12 +20,12 @@ class Tag(models.Model):
                        'color',
                        'slug',)
 
-    def __str__(self):
-        return self.slug
-
     class Meta:
         ordering = ('-id',)
         verbose_name_plural = 'Идентификаторы'
+
+    def __str__(self):
+        return self.slug
 
 
 class Ingredient(models.Model):
@@ -38,9 +38,6 @@ class Ingredient(models.Model):
     REQUIRED_FIELDS = ('name',
                        'measurement_unit',)
 
-    def __str__(self):
-        return self.name
-
     class Meta:
         ordering = ('name',)
         verbose_name_plural = 'Ингредиенты'
@@ -49,6 +46,9 @@ class Ingredient(models.Model):
                                             'measurement_unit'),
                                     name='pair_unique'),
         )
+
+    def __str__(self):
+        return self.name
 
 
 class Recipe(models.Model):
@@ -73,7 +73,9 @@ class Recipe(models.Model):
     )
     image = models.ImageField(upload_to='recipes/')
     cooking_time = models.PositiveSmallIntegerField(
-        validators=(MinValueValidator(1),),
+        validators=(MinValueValidator(
+            1,
+            message='Время не может быть меньше или равно нулю'),),
         verbose_name=_('Время готовки'))
 
     REQUIRED_FIELDS = '__all__'
@@ -108,7 +110,9 @@ class RecipeIngredients(models.Model):
                                    on_delete=models.PROTECT,
                                    verbose_name=_('Ингредиент'), )
     amount = models.PositiveSmallIntegerField(
-        validators=(MinValueValidator(1),),
+        validators=(MinValueValidator(
+            1,
+            message='Количество не может быть меньше или равно нулю'),),
         verbose_name=_('Количество'),
     )
 

@@ -6,16 +6,16 @@ from .views import CustomTokenDestroyView, FollowListViewSet, follow_author
 
 app_name = 'users'
 
-api_router = DefaultRouter()
-api_router.register(r'users/subscriptions',
-                    FollowListViewSet,
-                    basename='подписки')
+api_router_v1 = DefaultRouter()
+api_router_v1.register(r'users/subscriptions',
+                       FollowListViewSet,
+                       basename='подписки')
 
 urlpatterns = [
     path('users/<int:pk>/subscribe/',
          follow_author,
          name='follow-author'),
-    path(r'', include(api_router.urls)),
+    path(r'', include(api_router_v1.urls)),
     path('', include('djoser.urls')),
     path('auth/token/login/',
          TokenCreateView.as_view(),

@@ -11,7 +11,7 @@ EMPTY_VALUE = '--пусто--'
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
-SECRET_KEY = '4dt(c^+wa+%1o7&w$f)y-ey)gchkt=nucpw!tgxm#04rmvs@1q'
+SECRET_KEY = os.getenv('SECRET_KEY', default='default_key_124%6^7&88$@%!')
 
 
 DEBUG = True

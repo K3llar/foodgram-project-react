@@ -51,7 +51,7 @@ jobs:
             echo DB_PORT=${{ secrets.DB_PORT }} >> .env
             echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env
             echo ALLOWED_HOSTS=${{ secrets.ALLOWED_HOSTS }} >> .env
-            sudo docker-compose -f infra/docker-compose.yml up -d
+            sudo docker-compose -f docker-compose.yml up -d
 
   send_message:
     runs-on: ubuntu-latest

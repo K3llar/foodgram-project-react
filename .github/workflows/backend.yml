@@ -42,7 +42,6 @@ jobs:
             sudo docker pull k3llar/foodgram:latest
             sudo docker-compose stop
             sudo docker-compose rm backend
-            sudo docker-compose -f docker-compose.yml up -d
             touch .env
             echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
             echo DB_NAME=${{ secrets.DB_NAME }} >> .env

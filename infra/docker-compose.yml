@@ -1,14 +1,6 @@
 version: '3.8'
 services:
 
-  frontend:
-    build:
-      context: ../frontend
-      dockerfile: Dockerfile
-    volumes:
-      - ../frontend/:/app/result_build/
-
-
   db:
     image: postgres:12.4
     volumes:
@@ -16,22 +8,16 @@ services:
     env_file:
       - ../backend/.env
     restart: always
-#  web:
-##      image: k3llar/foodgram-project-react:latest
-#      restart: always
-#      volumes:
-#        - static_value:/code/static/
-#        - media_value:/code/media/
-#      depends_on:
-#        - db
-#      env_file:
-#        - ../backend/.env
+
+  frontend:
+    image: k3llar/foodgram-frontend:latest
+    volumes:
+      - ../frontend/:/app/result_build/
+    depends_on:
+      - db
 
   backend:
-#    image: k3llar/foodgram:latest
-    build:
-      context: ../backend
-      dockerfile: Dockerfile
+    image: k3llar/foodgram:latest
     restart: always
     volumes:
       - static_value:/code/static/

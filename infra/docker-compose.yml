@@ -7,7 +7,6 @@ services:
       - postgres_data:/var/lib/postgresql/data
     env_file:
       - ./.env
-    restart: always
 
   frontend:
     image: k3llar/foodgram-frontend:v1.0

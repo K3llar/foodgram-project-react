@@ -63,11 +63,12 @@ docker-compose exec backend python manage.py createsuperuser - для созда
 # На данный момент проект доступен
 по адресу http://51.250.4.142/
 
-Параметры тестового пользователя: admin
+Параметры тестового пользователя: 
+admin
 
-                                  admin@admin.com
+admin@admin.com
                                   
-                                  2022Admin
+2022Admin
 
 
 

@@ -14,13 +14,13 @@ class IngredientFilter(django_filters.FilterSet):
 
 
 class RecipeFilter(django_filters.FilterSet):
-    tags = django_filters.AllValuesMultipleFilter(
-        field_name='tags__slug',
-        label='tags'
-    )
     is_favorited = django_filters.BooleanFilter(
         method='get_favorite',
         label='favorite',
+    )
+    tags = django_filters.AllValuesMultipleFilter(
+        field_name='tags__slug',
+        label='tags'
     )
     is_in_shopping_cart = django_filters.BooleanFilter(
         method='get_is_in_shopping_cart',
@@ -36,10 +36,8 @@ class RecipeFilter(django_filters.FilterSet):
 
     def get_favorite(self, queryset, name, value):
         if value:
-            return Recipe.objects.filter(
-                in_favorite__user=self.request.user
-            )
-        return Recipe.objects.all().exclude(
+            return queryset.filter(in_favorite__user=self.request.user)
+        return queryset.exclude(
             in_favorite__user=self.request.user
         )
 

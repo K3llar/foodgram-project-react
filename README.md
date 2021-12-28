@@ -15,24 +15,39 @@ Foodgram - проект для обмена рецептами между пол
 Для запуска необходимо заполнить поля в github.workflows
 
 DOCKER_USERNAME - имя пользователя в hub.docker
+
 DOCKER_PASSWORD - пароль
 
+
 HOST - адрес сервера
+
 USER - пользователь
+
+
 SSH_KEY - приватный ssh ключ
+
 PASSPHRASE - кодовая фраза
 
 DB_ENGINE - django.db.backends.postgresql
+
 DB_NAME - postgres (по умолчанию)
+
 POSTGRES_USER - postgres (по умолчанию)
+
 POSTGRES_PASSWORD - postgres (по умолчанию)
+
 DB_HOST - db
+
 DB_PORT - 5432
 
+
 SECRET_KEY - секретный ключ приложения django (необходимо чтобы были экранированы или отсутствовали скобки)
+
 ALLOWED_HOSTS - список разрешенных адресов
 
+
 TELEGRAM_TO - id пользователя
+
 TELEGRAM_TOKEN - токен бота
 
 ### При первом запуске необходимо выполнить следующие команды
@@ -47,8 +62,11 @@ docker-compose exec backend python manage.py createsuperuser - для созда
 
 # На данный момент проект доступен
 по адресу http://51.250.4.142/
+
 Параметры тестового пользователя: admin
+
                                   admin@admin.com
+                                  
                                   2022Admin
 
 

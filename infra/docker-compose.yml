@@ -10,14 +10,14 @@ services:
     restart: always
 
   frontend:
-    image: k3llar/foodgram-frontend:latest
+    image: k3llar/foodgram-frontend:v1.0
     volumes:
       - ../frontend/:/app/result_build/
     depends_on:
       - db
 
   backend:
-    image: k3llar/foodgram:latest
+    image: k3llar/foodgram:v1.0
     restart: always
     volumes:
       - static_value:/code/static/

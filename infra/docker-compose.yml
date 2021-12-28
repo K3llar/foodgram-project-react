@@ -17,7 +17,7 @@ services:
       - db
 
   backend:
-    image: k3llar/foodgram:v1.0
+    image: k3llar/foodgram:latest
     restart: always
     volumes:
       - static_value:/code/static/

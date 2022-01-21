@@ -51,8 +51,10 @@ TELEGRAM_TO - id пользователя
 TELEGRAM_TOKEN - токен бота
 
 ### При первом запуске необходимо выполнить следующие команды
-docker-compose exec backend python manage.py makemigrations 
+docker-compose exec backend python manage.py makemigrations
+
 docker-compose exec backend python manage.py migrate - для проведения необходимых изменений в базе данных
+
 docker-compose exec backend python manage.py read_data_from_json fixtures - для загрузки в базу данных таблицу ингредиентов
 
 docker-compose exec backend python manage.py collectstatic --no-input - для подключения статики
